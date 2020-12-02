@@ -109,29 +109,36 @@ ifeq ($(LOCAL_EXECUTION),true)
 	BOWTIE_CHUNKMBS 	:= 2000
 	SAMTOOLS_SORT_MEM 	:= 2G
 	## NB: The 'EXE_DIR' MUST be an ABSOLUTE PATH or sRNABench will fail!
-	EXE_DIR   := home/bin/smallRNAPipeline
-	mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
+	# EXE_DIR   := home/bin/smallRNAPipeline
+	#mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 	#current_dir_rel := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
-	EXE_DIR := $(dir $(mkfile_path))
+	#EXE_DIR := $(dir $(mkfile_path))
 	
+	## added by Komal S. Rathi 10/16/2020
+	## paths to dependencies
+	EXE_DIR := /mnt/isilon/xing_lab/aspera/rathik/exceRpt
+	EXE_DB := /mnt/isilon/xing_lab/aspera/rathik/exceRpt-db/
+	EXE_DEP := /mnt/isilon/xing_lab/aspera/rathik/excerpt_env
+	FASTQC_DIR := /mnt/isilon/xing_lab/aspera/rathik/excerpt_env/opt/fastqc-0.11.9
+	BBMAP_DIR := /mnt/isilon/xing_lab/aspera/rathik/excerpt_env/opt/bbmap-38.87-0
+
 	##
 	## 6) Check that the paths to the required 3rd party executables work!
 	##
 	JAVA_EXE              := /usr/bin/java
-	#FASTX_CLIP_EXE        := $(EXE_DIR)/fastx_0.0.14/bin/fastx_clipper
-	#FASTX_FILTER_EXE      := $(EXE_DIR)/fastx_0.0.14/bin/fastq_quality_filter
-	BOWTIE2_EXE           := $(EXE_DIR)/bowtie2/bowtie2
-	SAMTOOLS_EXE          := $(EXE_DIR)/samtools/samtools
-	FASTQC_EXE            := $(JAVA_EXE) -classpath $(EXE_DIR)/FastQC:$(EXE_DIR)/FastQC/sam-1.103.jar:$(EXE_DIR)/FastQC/jbzip2-0.9.jar
-	SRATOOLS_EXE          := $(EXE_DIR)/sratoolkit.2.10.2-ubuntu64/bin/fastq-dump
+	#FASTX_CLIP_EXE        := $(EXE_DEP)/bin/fastx_clipper
+	#FASTX_FILTER_EXE      := $(EXE_DEP)/bin/fastq_quality_filter
+	BOWTIE2_EXE           := $(EXE_DEP)/bin/bowtie2
+	SAMTOOLS_EXE          := $(EXE_DEP)/bin/samtools
+	FASTQC_EXE            := $(JAVA_EXE) -classpath $(FASTQC_DIR):$(FASTQC_DIR)/sam-1.103.jar:$(FASTQC_DIR)/jbzip2-0.9.jar
+	SRATOOLS_EXE          := $(EXE_DEP)/bin/fastq-dump
 	EXCERPT_TOOLS_EXE     := $(EXE_DIR)/exceRpt_Tools.jar
-	DATABASE_PATH         := $(EXE_DIR)/DATABASE
-	STAR_EXE              := $(EXE_DIR)/STAR/bin/Linux_x86_64/STAR
-	STAR_GENOMES_DIR      := $(DATABASE_PATH)/Genomes_BacteriaFungiMammalPlantProtistVirus
-	#STAR_PARAMS_FILE_PATH := $(STAR_GENOMES_DIR)/STAR_Parameters_Exogenous.in
-	STAR_PARAMS_FILE_PATH := $(EXE_DIR)/
-	BBDUK_EXE	      := $(EXE_DIR)/bbmap/bbduk.sh
-	BBDUK_RESOURCES	      := $(EXE_DIR)/bbmap/resources
+	DATABASE_PATH         := $(EXE_DB)/DATABASE
+	STAR_EXE              := $(EXE_DEP)/bin/STAR
+	#STAR_GENOMES_DIR      := $(DATABASE_PATH)/Genomes_BacteriaFungiMammalPlantProtistVirus
+	STAR_PARAMS_FILE_PATH := $(DATABASE_PATH)/STAR_Parameters_Exogenous.in
+	BBDUK_EXE	      := $(BBMAP_DIR)/bbduk.sh
+	BBDUK_RESOURCES	      := $(BBMAP_DIR)/resources
 
 	##
 	## Use the input path to infer filetype and short name
@@ -194,9 +201,6 @@ BOWTIE_SEED_LENGTH := $(MIN_READ_LENGTH)
 ##
 MIN_TRANSCRIPTOME_MAPPED := 100000
 MIN_GENOME_TRANSCRIPTOME_RATIO := 0.5
-
-
-
 
 
 USEAGE := 
@@ -305,7 +309,7 @@ endif
 
 #COMMAND_CLIP_ADAPTER ?= $(COMMAND_CONVERT_SRA) > $(OUTPUT_DIR)/$(SAMPLE_ID)/$(SAMPLE_ID).preClipped.fastq.tmp; $(BBDUK_EXE) ref=$(BBDUK_RESOURCES)/adapters.fa in=$(OUTPUT_DIR)/$(SAMPLE_ID)/$(SAMPLE_ID).preClipped.fastq.tmp out=$(OUTPUT_DIR)/$(SAMPLE_ID)/$(SAMPLE_ID).clipped.fastq.tmp.gz ktrim=r k=21 mink=$(MIN_ADAPTER_BASES_3p) tbo tpe hdist=1 minlen=$(MIN_READ_LENGTH) threads=$(N_THREADS) qtrim=r trimq=10 maq=10 entropy=0.3 entropywindow=50 entropyk=5 >> $(OUTPUT_DIR)/$(SAMPLE_ID).log 2>> $(OUTPUT_DIR)/$(SAMPLE_ID).err; rm $(OUTPUT_DIR)/$(SAMPLE_ID)/$(SAMPLE_ID).preClipped.fastq.tmp
 
-COMMAND_CLIP_ADAPTER ?= $(COMMAND_CONVERT_SRA) > $(OUTPUT_DIR)/$(SAMPLE_ID)/$(SAMPLE_ID).preClipped.fastq.tmp; $(BBDUK_EXE) ref=$(DATABASE_PATH)/adapters.fa in=$(OUTPUT_DIR)/$(SAMPLE_ID)/$(SAMPLE_ID).preClipped.fastq.tmp out=$(OUTPUT_DIR)/$(SAMPLE_ID)/$(SAMPLE_ID).clipped.fastq.tmp.gz ktrim=r k=10 mink=$(MIN_ADAPTER_BASES_3p) hdist=0 minlen=$(MIN_READ_LENGTH) trimpolya=7 threads=$(N_THREADS) >> $(OUTPUT_DIR)/$(SAMPLE_ID).log 2>> $(OUTPUT_DIR)/$(SAMPLE_ID).err; rm $(OUTPUT_DIR)/$(SAMPLE_ID)/$(SAMPLE_ID).preClipped.fastq.tmp
+COMMAND_CLIP_ADAPTER ?= $(COMMAND_CONVERT_SRA) > $(OUTPUT_DIR)/$(SAMPLE_ID)/$(SAMPLE_ID).preClipped.fastq.tmp; $(BBDUK_EXE) ref=$(DATABASE_PATH)/adapters/adapters.fa in=$(OUTPUT_DIR)/$(SAMPLE_ID)/$(SAMPLE_ID).preClipped.fastq.tmp out=$(OUTPUT_DIR)/$(SAMPLE_ID)/$(SAMPLE_ID).clipped.fastq.tmp.gz ktrim=r k=10 mink=$(MIN_ADAPTER_BASES_3p) hdist=0 minlen=$(MIN_READ_LENGTH) trimpolya=7 threads=$(N_THREADS) >> $(OUTPUT_DIR)/$(SAMPLE_ID).log 2>> $(OUTPUT_DIR)/$(SAMPLE_ID).err; rm $(OUTPUT_DIR)/$(SAMPLE_ID)/$(SAMPLE_ID).preClipped.fastq.tmp
 
 
 
@@ -382,7 +386,7 @@ endif
 ##
 ## STAR command to align both to UniVec and to the rRNAs
 ##
-COMMAND_MAP_UNIVEC_AND_RRNA ?= $(STAR_EXE) --runThreadN $(N_THREADS) --outFileNamePrefix $(OUTPUT_DIR)/$(SAMPLE_ID)/filteringAlignments_UniVec_and_rRNA_ --genomeDir $(DATABASE_PATH)/$(MAIN_ORGANISM_GENOME_ID)/STAR_INDEX_Univec_rRNA --readFilesIn $(FILE_TO_INPUT_TO_UNIVEC_ALIGNMENT) --readFilesCommand "gunzip -c" --outReadsUnmapped Fastx --parametersFiles $(DATABASE_PATH)/STAR_Parameters_Endogenous_smallRNA.in $(STAR_ENDOGENOUS_DYNAMIC_PARAMS) >> $(OUTPUT_DIR)/$(SAMPLE_ID).log 2>> $(OUTPUT_DIR)/$(SAMPLE_ID).err; \
+COMMAND_MAP_UNIVEC_AND_RRNA ?= $(STAR_EXE) --runThreadN $(N_THREADS) --outFileNamePrefix $(OUTPUT_DIR)/$(SAMPLE_ID)/filteringAlignments_UniVec_and_rRNA_ --genomeDir $(DATABASE_PATH)/UniVec/STAR_INDEX_UniVec --readFilesIn $(FILE_TO_INPUT_TO_UNIVEC_ALIGNMENT) --readFilesCommand "gunzip -c" --outReadsUnmapped Fastx --parametersFiles $(DATABASE_PATH)/STAR_Parameters_Endogenous_smallRNA.in $(STAR_ENDOGENOUS_DYNAMIC_PARAMS) >> $(OUTPUT_DIR)/$(SAMPLE_ID).log 2>> $(OUTPUT_DIR)/$(SAMPLE_ID).err; \
 $(SAMTOOLS_EXE) view $(OUTPUT_DIR)/$(SAMPLE_ID)/filteringAlignments_UniVec_and_rRNA_Aligned.out.bam | awk '{print $$3}' | sort -k 2,2 2>> $(OUTPUT_DIR)/$(SAMPLE_ID).err | uniq -c > $(OUTPUT_DIR)/$(SAMPLE_ID)/$(SAMPLE_ID).clipped.trimmed.filtered.UniVec_and_rRNA.counts 2>> $(OUTPUT_DIR)/$(SAMPLE_ID).err; \
 $(SAMTOOLS_EXE) view $(OUTPUT_DIR)/$(SAMPLE_ID)/filteringAlignments_UniVec_and_rRNA_Aligned.out.bam | awk '{print $$1}' | sort 2>> $(OUTPUT_DIR)/$(SAMPLE_ID).err | uniq -c | wc -l > $(OUTPUT_DIR)/$(SAMPLE_ID)/$(SAMPLE_ID).clipped.trimmed.filtered.UniVec_and_rRNA.readCount 2>> $(OUTPUT_DIR)/$(SAMPLE_ID).err; \
 gzip -c $(OUTPUT_DIR)/$(SAMPLE_ID)/filteringAlignments_UniVec_and_rRNA_Unmapped.out.mate1 > $(OUTPUT_DIR)/$(SAMPLE_ID)/$(SAMPLE_ID).clipped.trimmed.filtered.noUniVecOrRiboRNA.fastq.gz; \
@@ -622,7 +626,11 @@ $(OUTDIR)/$(SAMPLE_ID).clipped.trimmed.filtered.fastq.gz: $(OUTDIR)/$(SAMPLE_ID)
 	@echo -e "======================\n" >> $(OUTPUT_DIR)/$(SAMPLE_ID).log
 	@echo -e "$(ts) $(PIPELINE_NAME): Filtering reads to remove PhiX contamination:\n" >> $(OUTPUT_DIR)/$(SAMPLE_ID).log
 	@echo -e "$(ts) $(PIPELINE_NAME): $(BBDUK_EXE) in=$(OUTPUT_DIR)/$(SAMPLE_ID)/$(SAMPLE_ID).clipped.trimmed.filtered.tmp2 out=$(OUTPUT_DIR)/$(SAMPLE_ID)/$(SAMPLE_ID).clipped.trimmed.filtered.fastq.gz minlen=$(MIN_READ_LENGTH) threads=$(N_THREADS) qtrim=r trimq=10 maq=10 \n" >> $(OUTPUT_DIR)/$(SAMPLE_ID).log 2>> $(OUTPUT_DIR)/$(SAMPLE_ID).err
-	$(BBDUK_EXE) in=$(OUTPUT_DIR)/$(SAMPLE_ID)/$(SAMPLE_ID).clipped.trimmed.filtered.tmp2 out=$(OUTPUT_DIR)/$(SAMPLE_ID)/$(SAMPLE_ID).clipped.trimmed.filtered.fastq minlen=$(MIN_READ_LENGTH) threads=$(N_THREADS) ref=$(DATABASE_PATH)/phiX.fa k=31 hdist=1 2>>$(OUTPUT_DIR)/$(SAMPLE_ID)/$(SAMPLE_ID).clipped.trimmed.filtered.tmp.PhiX.log
+
+	# Adding debug step 1 (Komal S. Rathi)
+	# instead of absolute path (phix.fa) in ref parameter, just use keyword
+	$(BBDUK_EXE) in=$(OUTPUT_DIR)/$(SAMPLE_ID)/$(SAMPLE_ID).clipped.trimmed.filtered.tmp2 out=$(OUTPUT_DIR)/$(SAMPLE_ID)/$(SAMPLE_ID).clipped.trimmed.filtered.fastq minlen=$(MIN_READ_LENGTH) threads=$(N_THREADS) ref=phix k=31 hdist=1 2>>$(OUTPUT_DIR)/$(SAMPLE_ID)/$(SAMPLE_ID).clipped.trimmed.filtered.tmp.PhiX.log
+
 	gzip --force $(OUTPUT_DIR)/$(SAMPLE_ID)/$(SAMPLE_ID).clipped.trimmed.filtered.fastq
 	## Count reads that PASS the PhiX filter
 	grep "Result: " $(OUTPUT_DIR)/$(SAMPLE_ID)/$(SAMPLE_ID).clipped.trimmed.filtered.tmp.PhiX.log | awk '{print "passed_phiX_filter\t"$$2}' >> $(OUTPUT_DIR)/$(SAMPLE_ID).stats
@@ -765,6 +773,9 @@ $(OUTDIR)/endogenousAlignments_genomeMapped_transcriptome_Aligned.out.sorted.bam
 	@echo -e "$(ts) $(PIPELINE_NAME): Finished sorting endogenous transcriptome alignments\n" >> $(OUTPUT_DIR)/$(SAMPLE_ID).log
 	#
 	@echo -e "$(ts) $(PIPELINE_NAME): Performing read-coverage QC on endogenous transcriptome alignments:\n" >> $(OUTPUT_DIR)/$(SAMPLE_ID).log
+
+	# Adding debug step 2: Please convert .gtf to gtf.gz before this step (Komal S. Rathi)
+	# this gtf file comes with exceRptDB_v4_hg38_lowmem.tgz
 	@echo -e "$(ts) $(PIPELINE_NAME): gunzip -c $(DATABASE_PATH)/$(MAIN_ORGANISM_GENOME_ID)/gencodeAnnotation.gtf.gz > $(DATABASE_PATH)/$(MAIN_ORGANISM_GENOME_ID)/gencodeAnnotation.gtf" >> $(OUTPUT_DIR)/$(SAMPLE_ID).log
 	gunzip -c $(DATABASE_PATH)/$(MAIN_ORGANISM_GENOME_ID)/gencodeAnnotation.gtf.gz > $(DATABASE_PATH)/$(MAIN_ORGANISM_GENOME_ID)/gencodeAnnotation.gtf 2>> $(OUTPUT_DIR)/$(SAMPLE_ID).log
 	@echo -e "$(ts) $(PIPELINE_NAME): $(JAVA_EXE) -Xmx$(JAVA_RAM) -jar $(EXCERPT_TOOLS_EXE) ReadCoverage -exceRpt -a $(DATABASE_PATH)/$(MAIN_ORGANISM_GENOME_ID)/gencodeAnnotation.gtf -f $(OUTPUT_DIR)/$(SAMPLE_ID)/endogenousAlignments_genomeMapped_transcriptome_Aligned.out.sorted.bam 2>> $(OUTPUT_DIR)/$(SAMPLE_ID).log" >> $(OUTPUT_DIR)/$(SAMPLE_ID).log
