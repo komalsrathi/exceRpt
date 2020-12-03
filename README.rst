@@ -16,6 +16,13 @@ Introduction
 
 This is the modified exceRpt smallRNA pipeline.
 
+exceRpt_smallRNA -- This choreographs the processing, filtering, and alignment of a single smallRNA-seq sample. 
+
+mergePipelineRuns.R -- This script will take as input a directory containing 1 or more subdirectories or zipfiles containing output from the pipeline above. In this way, results from 1 or more smallRNA-seq samples can be combined, several QC plots are generated, and the read-counts are normalised ready for downstream analysis by clustering and/or differential expression.
+
+Please see the exceRpt mainpage (https://rkitchen.github.io/exceRpt) for instructions as to how to use the software.
+
+
 Installation on linux
 =====================
 
@@ -114,11 +121,11 @@ Output files
 
 	# let's check test output files/directories
 	$ ls output/ 
-	SRR026761.qcResult					| Text file containing a variety of QC metrics for this sample
-	SRR026761							| Directory containing the complete set of output files for this sample
-	SRR026761.stats						| Text file containing a variety of alignment statistics for this sample
-	SRR026761.log						| Text file containing normal logging information for this run
-	SRR026761.err						| Text file containing error logging information for this run
+	SRR026761.qcResult	| Text file containing a variety of QC metrics for this sample
+	SRR026761	| Directory containing the complete set of output files for this sample
+	SRR026761.stats	| Text file containing a variety of alignment statistics for this sample
+	SRR026761.log	| Text file containing normal logging information for this run
+	SRR026761.err	| Text file containing error logging information for this run
 	SRR026761_CORE_RESULTS_v5.0.0.tgz	| Archive containing only the most commonly used results for this sample
 
 	# let's check the directory containing the complete set of output files
@@ -152,7 +159,7 @@ Output files
 	# Contains read-depth across all gencode transcripts
 	endogenousAlignments_genomeMapped_transcriptome_Aligned.out.sorted.bam.coverage.txt 
 
-	# Transcriptome alignments (ungapped) of reads **not** mapped to the genome
+	# Transcriptome alignments (ungapped) of reads not mapped to the genome
 	endogenousAlignments_genomeUnmapped_transcriptome_Aligned.out.bam 
 	endogenousAlignments_genomeUnmapped_transcriptome_Log.final.out 
 	endogenousAlignments_genomeUnmapped_transcriptome_Log.out.gz
@@ -256,8 +263,8 @@ Note:
 
 Could not find the following files, may not be generated in the updated version:
 
-	[sampleID]/readCounts_miRNAmature_antisense.txt
-	[sampleID]/[sampleID].*.knownAdapterSeq      | 3' adapter sequence guessed (from known adapters) in this sample
-	[sampleID]/[sampleID].*.adapterSeq           | 3' adapter used to clip the reads in this run
-	[sampleID]/[sampleID].*.qualityEncoding      | PHRED encoding guessed for the input sequence reads 
+[sampleID]/readCounts_miRNAmature_antisense.txt
+[sampleID]/[sampleID].\*.knownAdapterSeq      | 3' adapter sequence guessed (from known adapters) in this sample
+[sampleID]/[sampleID].\*.adapterSeq           | 3' adapter used to clip the reads in this run
+[sampleID]/[sampleID].\*.qualityEncoding      | PHRED encoding guessed for the input sequence reads 
 
