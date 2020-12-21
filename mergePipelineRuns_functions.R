@@ -67,14 +67,15 @@ processSamplesInDir = function(data.dir, output.dir=data.dir, scriptDir="~/Dropb
 ##
 ## check dependencies
 ##
-lib="~/R/packages"
-lib="/efs/bin/R/R_Packages/"
+# lib="~/R/packages"
+# lib="/efs/bin/R/R_Packages/"
+lib = "/mnt/isilon/xing_lab/aspera/rathik/excerpt_env/lib/R/library"
 
 if(!file.exists(lib)){ dir.create(lib) }
 .libPaths(c(lib, .libPaths()))
 
-#baseURL = "https://cran.us.r-project.org"
-baseURL = "https://cran.r-project.org"
+# baseURL = "https://cran.us.r-project.org"
+# baseURL = "https://cran.r-project.org"
 
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager",lib=lib,repos=baseURL)
@@ -89,7 +90,7 @@ if(!"Rgraphviz" %in% rownames(installed.packages())) { BiocManager::install("Rgr
 if(!"scales" %in% rownames(installed.packages())) { install.packages("scales",lib=lib,repos=baseURL) }
 
 ## update
-update.packages(repos=baseURL,lib=lib,ask=F)
+# update.packages(repos=baseURL,lib=lib,ask=F)
 
 ## load
 require(plyr, lib.loc=lib)
