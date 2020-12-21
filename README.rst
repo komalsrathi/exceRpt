@@ -268,3 +268,18 @@ Could not find the following files, may not be generated in the updated version:
 [sampleID]/[sampleID].\*.adapterSeq           | 3' adapter used to clip the reads in this run
 [sampleID]/[sampleID].\*.qualityEncoding      | PHRED encoding guessed for the input sequence reads 
 
+Install R packages
+==================
+
+.. code-block:: bash
+
+	conda install -c bioconda bioconductor-rgraphviz
+	conda install -c r r-tidyverse
+	conda install -c bioconda bioconductor-marray
+	conda install -c conda-forge r-plyr
+	conda install -c r r-scales
+	conda install -c r r-reshape2
+	conda install -c conda-forge r-gplots
+	
+
+
