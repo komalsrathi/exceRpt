@@ -347,8 +347,8 @@ readData = function(samplePathList, output.dir){
   stats_cols = c("input","successfully_clipped","passed_quality_filter","failed_homopolymer_filter","passed_phiX_filter",
                  "calibrator","reads_used_for_alignment","genome","miRNA_sense","miRNA_antisense",
 		 "miRNAprecursor_sense","miRNAprecursor_antisense","tRNA_sense","tRNA_antisense","piRNA_sense","piRNA_antisense",
-		 "gencode_sense","gencode_antisense","circularRNA_sense","circularRNA_antisense","not_mapped_to_genome_or_libs","
-		 repetitiveElements","endogenous_gapped","input_to_exogenous_miRNA","exogenous_miRNA","input_to_exogenous_rRNA",
+		 "gencode_sense","gencode_antisense","circularRNA_sense","circularRNA_antisense","not_mapped_to_genome_or_libs",
+     "repetitiveElements","endogenous_gapped","input_to_exogenous_miRNA","exogenous_miRNA","input_to_exogenous_rRNA",
 		 "exogenous_rRNA","input_to_exogenous_genomes","exogenous_genomes")
   #mapping.stats = matrix(0,nrow=length(samplePathList),ncol=30, dimnames=list(1:length(samplePathList), c("input","successfully_clipped","failed_quality_filter","failed_homopolymer_filter","calibrator","UniVec_contaminants","rRNA","reads_used_for_alignment","genome","miRNA_sense","miRNA_antisense","miRNAprecursor_sense","miRNAprecursor_antisense","tRNA_sense","tRNA_antisense","piRNA_sense","piRNA_antisense","gencode_sense","gencode_antisense","circularRNA_sense","circularRNA_antisense","not_mapped_to_genome_or_libs","repetitiveElements","endogenous_gapped","input_to_exogenous_miRNA","exogenous_miRNA","input_to_exogenous_rRNA","exogenous_rRNA","input_to_exogenous_genomes","exogenous_genomes")))
   mapping.stats = matrix(0,nrow=length(samplePathList),ncol=length(stats_cols), dimnames=list(1:length(samplePathList),stats_cols)) 
