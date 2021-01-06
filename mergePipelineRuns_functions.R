@@ -252,7 +252,7 @@ plotExogenousTaxonomyTrees = function(counts, cumcounts, what, output.dir, taxon
   
   ## remove nodes with < 0.1% of all reads
   #minPercent = 1
-  keepRows = which(apply(counts.norm, 1, max) >= minPercent)
+  keepRows = which(apply(counts.norm, 1, max, na.rm = T) >= minPercent)
   keepRows = sort(unique(c(keepRows, which(apply(cumcounts.norm, 1, max) >= minPercent))))
   
   # use only paths through the tree that capture above a certain fraction of reads
@@ -709,8 +709,8 @@ readData = function(samplePathList, output.dir){
   libSizes$smRNA = mapping.stats[,grep("sense",colnames(mapping.stats))]
   libSizes$miRNA = colSums(exprs.miRNA)
   libSizes$exogenous_miRNA = colSums(exprs.exogenous_miRNA)
-  #libSizes$exogenous_rRNA = exprs.exogenousRibosomal_cumulative[rownames(exprs.exogenousRibosomal_cumulative)=="1",]
-  #libSizes$exogenous_genomes = exprs.exogenousGenomes_cumulative[rownames(exprs.exogenousGenomes_cumulative)=="1",]
+  libSizes$exogenous_rRNA = exprs.exogenousRibosomal_cumulative[rownames(exprs.exogenousRibosomal_cumulative)=="1",] # uncommented by Komal S. Rathi
+  libSizes$exogenous_genomes = exprs.exogenousGenomes_cumulative[rownames(exprs.exogenousGenomes_cumulative)=="1",] # uncommented by Komal S. Rathi
   
   
   ##
@@ -742,6 +742,7 @@ readData = function(samplePathList, output.dir){
   
   if(!is.null(exprs.exogenousRibosomal_specific)){
      if(nrow(exprs.exogenousRibosomal_specific) > 0){
+      print("test1")
     tmp = cbind(taxonomyInfo.exogenous_rRNA[match(rownames(exprs.exogenousRibosomal_specific), taxonomyInfo.exogenous_rRNA$ID), ], exprs.exogenousRibosomal_specific)
     write.table(tmp, file=paste(output.dir, "exceRpt_exogenousRibosomal_taxonomySpecific_ReadCounts.txt", sep="/"), sep="\t", row.names=F, quote=F)
     
@@ -841,6 +842,8 @@ readData = function(samplePathList, output.dir){
   
   if(!is.null(exprs.exogenousGenomes_specific)){
   if(nrow(exprs.exogenousGenomes_specific) > 0){
+    printMessage("test3")
+    print(exprs.exogenousGenomes_specific.rpm)
     tmp = cbind(taxonomyInfo.exogenous_genomes[match(rownames(exprs.exogenousGenomes_specific.rpm), taxonomyInfo.exogenous_genomes$ID), ], exprs.exogenousGenomes_specific.rpm)
     write.table(tmp, file=paste(output.dir, "exceRpt_exogenousGenomes_taxonomySpecific_ReadsPerMillion.txt", sep="/"), sep="\t", row.names=F, quote=F)
     tmp = cbind(taxonomyInfo.exogenous_genomes[match(rownames(exprs.exogenousGenomes_cumulative.rpm), taxonomyInfo.exogenous_genomes$ID), ], exprs.exogenousGenomes_cumulative.rpm)
