@@ -268,8 +268,12 @@ Could not find the following files, may not be generated in the updated version:
 [sampleID]/[sampleID].\*.adapterSeq           | 3' adapter used to clip the reads in this run
 [sampleID]/[sampleID].\*.qualityEncoding      | PHRED encoding guessed for the input sequence reads 
 
+
+Script to merge pipeline runs
+=============================
+
 Install R packages
-==================
+------------------
 
 .. code-block:: bash
 
@@ -281,5 +285,43 @@ Install R packages
 	conda install -c r r-reshape2
 	conda install -c conda-forge r-gplots
 	
+Running the script
+------------------
 
+.. code-block:: bash
+
+	Rscript mergePipelineRuns.R /mnt/isilon/xing_lab/aspera/rathik/urine_smallrna_output
+
+Final output files:
+-------------------
+
+.. code-block:: bash
+
+	exceRpt_adapterSequences.txt
+	exceRpt_biotypeCounts.txt 
+	exceRpt_circularRNA_ReadCounts.txt
+	exceRpt_circularRNA_ReadsPerMillion.txt 
+	exceRpt_DiagnosticPlots.pdf 
+	exceRpt_exogenous_miRNA_ReadCounts.txt
+	exceRpt_exogenous_miRNA_ReadsPerMillion.txt 
+	exceRpt_exogenousRibosomal_taxonomyCumulative_ReadCounts.txt
+	exceRpt_exogenousRibosomal_taxonomyCumulative_ReadsPerMillion.txt 
+	exceRpt_exogenousRibosomal_taxonomySpecific_ReadCounts.txt
+	exceRpt_exogenousRibosomal_taxonomySpecific_ReadsPerMillion.txt 
+	exceRpt_exogenousRibosomal_TaxonomyTrees_aggregateSamples.pdf 
+	exceRpt_exogenousRibosomal_TaxonomyTrees_perSample.pdf
+	exceRpt_gencode_ReadCounts.txt
+	exceRpt_gencode_ReadsPerMillion.txt 
+	exceRpt_miRNA_ReadCounts.txt
+	exceRpt_miRNA_ReadsPerMillion.txt 
+	exceRpt_piRNA_ReadCounts.txt
+	exceRpt_piRNA_ReadsPerMillion.txt 
+	exceRpt_QCresults.txt 
+	exceRpt_ReadLengths.txt 
+	exceRpt_readMappingSummary.txt
+	exceRpt_sampleGroupDefinitions.txt
+	exceRpt_smallRNAQuants_ReadCounts.RData 
+	exceRpt_smallRNAQuants_ReadsPerMillion.RData
+	exceRpt_tRNA_ReadCounts.txt 
+	exceRpt_tRNA_ReadsPerMillion.txt
 
